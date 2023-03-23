@@ -65,7 +65,7 @@ function App() {
         onMouseLeave={() => setHoverColor(null)}
         style={{
           border: `1px solid ${hoverColor || currentColor}`,
-          transition: 'border-color 0.2s ease-in-out',
+          transition: 'border-color 0.1s ease-in-out',
           cursor: 'pointer'
         }}>
           generar
