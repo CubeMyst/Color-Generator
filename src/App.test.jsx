@@ -13,12 +13,12 @@ describe('App', () => {
 		const generateButton = screen.getByText(/Generar color/i);
 		const colorBox = screen.getByTestId('color__box');
 		// Get initial color
-		const initialColor = colorBox.style.backgroundColor;
+		const initialColor = getComputedStyle(colorBox).backgroundColor;
 		// Click button to generate new color
 		fireEvent.click(generateButton);
 		// Get new color
-		const newColor = colorBox.style.backgroundColor;
+		const newColor = getComputedStyle(colorBox).backgroundColor;
 		// Check that the color has changed
-		expect(newColor).not.toEqual(initialColor);
+		expect(newColor).not.toBe(initialColor);
 	});
 });
