@@ -31,3 +31,4 @@ yarn.lock
 /build
 out/
 static/
+.vercel

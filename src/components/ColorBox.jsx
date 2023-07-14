@@ -1,47 +1,43 @@
-import React, { useRef } from 'react';
+import React, { useRef } from 'react'
+import useColorContrast from '../hooks/useColorContrast'
+import convert from 'color-convert'
 
-export default function ColorBox({
-	currentColor,
-	contrastColor,
-	colorNameValue,
-	fontColor,
-	handleCopyHex,
-}) {
-	const colorInputRef = useRef(null);
+export default function ColorBox() {
+  const { currentColor, contrastColor, fontColor, handleGenerateColor } =
+		useColorContrast()
+  const colorNameValue = convert.hex.keyword(currentColor)
+  const colorInputRef = useRef(null)
 
-	const handleCopy = () => {
-		navigator.clipboard.writeText(currentColor);
-		colorInputRef?.current.focus();
-		colorInputRef?.current.select();
+  const handleCopy = () => {
+    navigator.clipboard.writeText(currentColor)
+    colorInputRef?.current.focus()
+    colorInputRef?.current.select()
 
-		if (
-			Notification &&
-			(Notification.permission === 'granted' ||
-				Notification.permission === undefined)
-		) {
-			console.log('Color copiado correctamente!');
-		} else {
-			console.log('La notificación está desactivada.');
-		}
+    if (
+      window.Notification &&
+			(window.Notification.permission === 'granted' ||
+				window.Notification.permission === undefined)
+    ) {
+      console.log('Color copiado correctamente!')
+    } else {
+      console.log('La notificación está desactivada.')
+    }
 
-		document.execCommand('copy');
-	};
+    document.execCommand('copy')
+  };
 
-	const buttonBorder = {
-		border: `1px solid ${currentColor}`,
-	};
+  // const buttonBorder = {
+  //   border: `1px solid ${currentColor}`
+  // }
 
-	return (
+  return (
 		<div
 			data-testid='color__box'
 			className='color__box'
 			style={{ backgroundColor: currentColor }}>
-			<label
-				htmlFor='color-input'
-				style={fontColor}>
-				{colorNameValue}
-			</label>
-			<p style={{ color: contrastColor }}>
+			<form
+				style={{ color: contrastColor }}
+				onSubmit={(e) => handleGenerateColor(e)}>
 				<input
 					type='text'
 					data-testid='color-input'
@@ -51,13 +47,17 @@ export default function ColorBox({
 					onClick={handleCopy}
 					readOnly
 				/>
-			</p>
-			<button
-				data-testid='generate-color-button'
-				onClick={handleCopyHex}
-				style={buttonBorder}>
-				Generar color
-			</button>
+				<label
+					htmlFor='color-input'
+					style={fontColor}>
+					{colorNameValue}
+				</label>
+				<button
+					type='submit'
+					onClick={handleGenerateColor}>
+					Generar color
+				</button>
+			</form>
 		</div>
-	);
+  )
 }
